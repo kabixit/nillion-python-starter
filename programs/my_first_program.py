@@ -1,12 +1,22 @@
 from nada_dsl import *
 
-
 def nada_main():
-    party1 = Party(name="Party1")
-    my_int1 = SecretInteger(Input(name="my_int1", party=party1))
-    my_int2 = SecretInteger(Input(name="my_int2", party=party1))
+    prayasu = Party(name="Prayasu")  # party 0
+    datta = Party(name="Datta")      # party 1
 
-    # write the computation for your program here - use my_int1 and my_int2 as inputs
-    # make sure you change the output below to be your new output
+    prayasu_skill = SecretInteger(Input(name="prayasu_skill", party=prayasu))
+    datta_skill = SecretInteger(Input(name="datta_skill", party=datta))
 
-    return [Output(my_int1, "my_output", party1)]
+    selection_result = (
+        (prayasu_skill > datta_skill).if_else(
+            Integer(0),
+            (datta_skill > prayasu_skill).if_else(
+                Integer(1),
+                Integer(2)
+            )
+        )
+    )
+
+    out = Output(selection_result, "selection_result", prayasu)
+
+    return [out]
